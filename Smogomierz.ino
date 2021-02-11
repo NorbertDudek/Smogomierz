@@ -5,11 +5,11 @@
 
 // ****** CHOOSE(uncomment) ONLY ONE!!! ******
 
-#define DUSTSENSOR_PMS5003_7003_BME280_0x76 // PMS5003 / PMS7003 - BME280_0x76
+// #define DUSTSENSOR_PMS5003_7003_BME280_0x76 // PMS5003 / PMS7003 - BME280_0x76
 // #define DUSTSENSOR_PMS5003_7003_BME280_0x77 // PMS5003 / PMS7003 - BME280_0x77
 // #define DUSTSENSOR_SDS011_21 // Nova Fitness SDS011 / SDS021
 // #define DUSTSENSOR_HPMA115S0 // Honeywell HPMA115S0
-// #define DUSTSENSOR_SPS30 // Sensirion SPS30
+#define DUSTSENSOR_SPS30 // Sensirion SPS30
 
 // *******************************************
 
@@ -295,7 +295,6 @@ PMS::DATA data;
 // DUST Sensor config - END
 
 char device_name[20];
-char mqqt_id[20];
 
 unsigned int DUST_interval = 60 * 1000; // 1 minute
 unsigned int previous_DUST_Millis = 0;
@@ -449,7 +448,7 @@ void MQTTreconnect() {
   if (!mqttclient.connected()) {
     Serial.print(F("Attempting MQTT connection..."));
     // Attempt to connect
-    if (mqttclient.connect(mqqt_id, MQTT_USER, MQTT_PASSWORD)) {
+    if (mqttclient.connect(device_name, MQTT_USER, MQTT_PASSWORD)) {
       Serial.println(F("connected"));
     } else {
       Serial.print(F("failed, rc="));
@@ -862,8 +861,6 @@ void setup() {
     strncpy(device_name, DEVICENAME, 20);
   }
   
-  strcpy(mqqt_id, device_name);
-
   Serial.print(F("Device name: "));
   Serial.println(device_name);
 
