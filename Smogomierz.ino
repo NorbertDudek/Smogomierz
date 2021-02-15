@@ -860,7 +860,7 @@ void setup() {
   } else {
     strncpy(device_name, DEVICENAME, 20);
   }
-  
+
   Serial.print(F("Device name: "));
   Serial.println(device_name);
 
@@ -1388,6 +1388,8 @@ void sendDataToExternalDBs() {
       } else {
         mqttclient.publish((MQTT_FINAL_AIRQUALITY).c_str(), "UNKNOWN", true);
       }
+        if (DEBUG)
+          Serial.println(F("Publish measurements from Non!\n"));
     }
 
     if (!strcmp(THP_MODEL, "BME280")) {
@@ -1395,6 +1397,8 @@ void sendDataToExternalDBs() {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
         mqttclient.publish((MQTT_FINAL_HUMI).c_str(), String(currentHumidity).c_str(), true);
         mqttclient.publish((MQTT_FINAL_PRESS).c_str(), String(currentPressure).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from BME280!\n"));
       } else {
         if (DEBUG) {
           Serial.println(F("No measurements from BME280!\n"));
@@ -1406,6 +1410,8 @@ void sendDataToExternalDBs() {
       if (checkBmpStatus() == true) {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
         mqttclient.publish((MQTT_FINAL_PRESS).c_str(), String(currentPressure).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from BMP280!\n"));
       } else {
 
         if (DEBUG) {
@@ -1418,6 +1424,8 @@ void sendDataToExternalDBs() {
       if (checkHTU21DStatus() == true) {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
         mqttclient.publish((MQTT_FINAL_HUMI).c_str(), String(currentHumidity).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from HTU21!\n"));
       } else {
         if (DEBUG) {
           Serial.println(F("No measurements from HTU21!\n"));
@@ -1429,6 +1437,8 @@ void sendDataToExternalDBs() {
       if (checkDHT22Status() == true) {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
         mqttclient.publish((MQTT_FINAL_HUMI).c_str(), String(currentHumidity).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from DHT22!\n"));
       } else {
         if (DEBUG) {
           Serial.println(F("No measurements from DHT22!\n"));
@@ -1440,6 +1450,8 @@ void sendDataToExternalDBs() {
       if (checkDHT22Status() == true) {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
         mqttclient.publish((MQTT_FINAL_HUMI).c_str(), String(currentHumidity).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from SHT1x!\n"));
       } else {
         if (DEBUG) {
           Serial.println(F("No measurements from SHT1x!\n"));
@@ -1450,6 +1462,8 @@ void sendDataToExternalDBs() {
     if (!strcmp(THP_MODEL, "DS18B20")) {
       if (checkDS18B20Status() == true) {
         mqttclient.publish((MQTT_FINAL_TEMP).c_str(), String(currentTemperature).c_str(), true);
+        if (DEBUG)
+          Serial.println(F("Publish measurements from DS18B20!\n"));
       } else {
         if (DEBUG) {
           Serial.println(F("No measurements from DS18B20!\n"));
@@ -1457,10 +1471,7 @@ void sendDataToExternalDBs() {
       }
     }
 
-    if (DEEPSLEEP_ON == true) {
-      mqttclient.disconnect();
-    }
-
+    mqttclient.disconnect();
   }
 
 }
